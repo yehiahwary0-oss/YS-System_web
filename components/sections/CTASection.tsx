@@ -1,0 +1,60 @@
+import Link from 'next/link'
+import type { HomepageSection } from '@/types'
+import { ctaContentSchema, type CtaContent } from '@/lib/cms/schemas'
+import { validateCmsContent, validateUrl } from '@/lib/cms/validate'
+
+interface CTASectionProps {
+  locale: string
+  cmsSection?: HomepageSection
+}
+
+const fallback = {
+  en: { heading: 'Ready to Get Started?', body: 'Discover how our products can help your business grow.', primary: 'Contact Us', primary_url: '/contact', secondary: 'Browse Products', secondary_url: '/products' },
+  ar: { heading: 'هل أنت مستعد للبدء؟', body: 'اكتشف كيف يمكن لمنتجاتنا أن تساعد عملك على النمو.', primary: 'تواصل معنا', primary_url: '/contact', secondary: 'استعرض المنتجات', secondary_url: '/products' },
+}
+
+export function CTASection({ locale, cmsSection }: CTASectionProps) {
+  const isAr = locale === 'ar'
+  const f = fallback[locale as keyof typeof fallback] ?? fallback.en
+
+  const heading = cmsSection?.title ?? f.heading
+  const body    = cmsSection?.subtitle ?? f.body
+
+  const content = validateCmsContent(cmsSection, ctaContentSchema)
+  const ptext   = (isAr ? content?.primary_text_ar : content?.primary_text_en) ?? f.primary
+  const stext   = (isAr ? content?.secondary_text_ar : content?.secondary_text_en) ?? f.secondary
+  const purl    = validateUrl(content?.primary_url, f.primary_url)
+  const surl    = validateUrl(content?.secondary_url, f.secondary_url)
+
+  return (
+    <section className="section-sm section-divider-top" style={{ backgroundColor: 'var(--color-background)' }}>
+      <div className="container-site" style={{ textAlign: 'center', maxWidth: '42rem', margin: '0 auto' }}>
+        <h2 className="font-display font-semibold text-fluid-xl tracking-tight" style={{ color: 'var(--color-foreground)', marginBottom: '1rem' }}>
+          {heading}
+        </h2>
+        <p style={{ color: 'var(--color-foreground-muted)', fontSize: '1.0625rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+          {body}
+        </p>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href={`/${locale}${purl}`} style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            padding: '0.875rem 2rem', borderRadius: '0.5rem', fontSize: '0.9375rem', fontWeight: 600,
+            backgroundColor: 'var(--color-accent)', color: '#fff', textDecoration: 'none',
+            transition: 'all 150ms',
+          }}>
+            {ptext}
+          </Link>
+          <Link href={`/${locale}${surl}`} style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            padding: '0.875rem 2rem', borderRadius: '0.5rem', fontSize: '0.9375rem', fontWeight: 500,
+            border: '1px solid var(--color-border)', color: 'var(--color-foreground)',
+            backgroundColor: 'var(--color-background-subtle)', textDecoration: 'none',
+            transition: 'all 150ms',
+          }}>
+            {stext}
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}

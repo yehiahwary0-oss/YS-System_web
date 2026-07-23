@@ -1,0 +1,8 @@
+export type { ModuleManifest, PlatformModule } from '../contracts/ModuleManifest'
+export type { NavItem, NavGroup } from '../registries/NavigationRegistry'
+export type { PermissionDefinition, PermissionGroup } from '../registries/PermissionRegistry'
+export type { WidgetDefinition } from '../registries/WidgetRegistry'
+export type { SettingsSection } from '../registries/SettingsRegistry'
+export type { SearchProvider } from '../registries/SearchRegistry'
+export type { SeoContribution } from '../registries/SeoRegistry'
+export type { FeatureFlagDefinition } from '../registries/FeatureFlagRegistry'
