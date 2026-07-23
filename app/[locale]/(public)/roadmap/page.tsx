@@ -23,7 +23,7 @@ const content = {
 
 const statusStyles: Record<string, { bg: string; color: string; dot: string }> = {
   planned:     { bg: 'var(--color-background-muted)', color: 'var(--color-foreground-muted)', dot: '#71717A' },
-  in_progress: { bg: 'rgba(99,102,241,0.1)',          color: 'var(--color-accent)',           dot: 'var(--color-accent)' },
+  in_progress: { bg: 'rgba(47,123,255,0.1)',          color: 'var(--color-accent)',           dot: 'var(--color-accent)' },
   completed:   { bg: 'rgba(16,185,129,0.1)',           color: '#10B981',                       dot: '#10B981' },
   cancelled:   { bg: 'rgba(239,68,68,0.1)',            color: '#EF4444',                       dot: '#EF4444' },
 }

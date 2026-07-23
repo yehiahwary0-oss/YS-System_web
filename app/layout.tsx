@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
   manifest: '/branding/site.webmanifest',
   other: {
-    'theme-color': '#4F46E5',
+    'theme-color': '#2F7BFF',
     'color-scheme': 'light dark',
   },
 }
@@ -22,7 +22,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover' as const,
-  themeColor: '#4F46E5',
+  themeColor: '#2F7BFF',
 }
 
 const localeScript = `

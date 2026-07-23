@@ -380,9 +380,9 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
               >
                 <span
                   className="glass-badge inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[10px] font-semibold tracking-[0.1em] uppercase"
-                  style={{ color: 'rgba(99, 102, 241, 0.85)' }}
+                  style={{ color: 'rgba(47, 123, 255, 0.9)' }}
                 >
-                  <span className="w-1 h-1 rounded-full" style={{ background: '#6366F1' }} />
+                  <span className="w-1 h-1 rounded-full" style={{ background: '#2F7BFF' }} />
                   {badge}
                 </span>
               </motion.div>
