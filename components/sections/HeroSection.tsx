@@ -29,6 +29,8 @@ const fallback = {
     cta_secondary: 'View Products',
     ecosystem_line: '3 Products',
     ecosystem_line_hl: 'One Ecosystem',
+    trust_line_1: 'Trusted by 1,000+ businesses',
+    trust_line_2: 'across the globe',
   },
   ar: {
     badge: 'شركة المنتجات البرمجية',
@@ -40,8 +42,15 @@ const fallback = {
     cta_secondary: 'عرض المنتجات',
     ecosystem_line: '٣ منتجات',
     ecosystem_line_hl: 'منظومة واحدة',
+    trust_line_1: 'موثوق من أكثر من 1,000 شركة',
+    trust_line_2: 'حول العالم',
   },
 }
+
+// Generic trust-avatar placeholders — initials + accent-tinted gradients,
+// not fabricated customer photos. Swap for real logos/photos via CMS later.
+const TRUST_AVATAR_INITIALS = ['AK', 'MS', 'RH', 'NY'] as const
+const TRUST_AVATAR_COLORS = ['#2F7BFF', '#8B5CF6', '#10B981', '#F59E0B'] as const
 
 // NOTE — product slugs are assumed (`/products/[slug]`) as `ys-matrix`,
 // `ys-sports`, `ys-care`. If the real slugs differ, only this array needs
@@ -279,7 +288,7 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
   return (
     <section
       ref={sectionRef}
-      className="relative h-[calc(100vh-4rem)] lg:h-auto flex flex-col overflow-hidden"
+      className="relative flex flex-col overflow-hidden"
       style={{ backgroundColor: 'var(--color-background)' }}
     >
       {/*
@@ -336,6 +345,7 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
           alt=""
           fill
           className="object-cover"
+          style={{ objectPosition: '50% 100%' }}
           sizes="100vw"
           priority
         />
@@ -355,14 +365,14 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
       </div>
 
       {/* Main content */}
-      <motion.div className="relative z-10 flex-1 flex items-center" style={{ opacity }}>
-        <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-10 py-16 sm:py-20 lg:py-14">
+      <motion.div className="relative z-10 lg:flex-1 flex lg:items-center" style={{ opacity }}>
+        <div className="w-full max-w-[1440px] mx-auto px-6 lg:px-10 pt-7 pb-6 sm:pt-8 lg:py-10">
           <div className="relative">
             {/* TEXT — always capped + physically left on desktop (see the
                 scrim comment above for why this no longer mirrors in RTL).
-                On mobile it's just the natural full-width stacked block,
-                same as before. */}
-            <div className="flex flex-col justify-center lg:max-w-[460px]">
+                On mobile it's centered (badge/headline/subline/CTAs) to match
+                the target design — desktop stays physically left. */}
+            <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:max-w-[460px]">
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -377,7 +387,7 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
                 </span>
               </motion.div>
 
-              <div style={{ height: 20 }} />
+              <div className="h-2.5 lg:h-5" />
 
               <motion.h1
                 initial={{ opacity: 0, y: 16 }}
@@ -404,7 +414,7 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
                 )}
               </motion.h1>
 
-              <div style={{ height: 20 }} />
+              <div className="h-2.5 lg:h-5" />
 
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
@@ -416,36 +426,70 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
                 {subline}
               </motion.p>
 
-              <div style={{ height: 32 }} />
+              <div className="h-4 lg:h-8" />
 
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col sm:flex-row gap-3.5"
+                className="flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto"
               >
                 <Link
                   href={ctaPrimaryUrl}
-                  className={cn(buttonVariants({ variant: 'primary', size: 'lg' }), 'btn-hero-primary')}
+                  className={cn(buttonVariants({ variant: 'primary', size: 'lg' }), 'btn-hero-primary w-full sm:w-auto')}
                 >
                   {ctaPrimaryText}
                   <ArrowIcon size={18} />
                 </Link>
                 <Link
                   href={ctaSecondaryUrl}
-                  className={cn(buttonVariants({ variant: 'secondary', size: 'lg' }), 'btn-hero-secondary text-white')}
+                  className={cn(buttonVariants({ variant: 'secondary', size: 'lg' }), 'btn-hero-secondary text-white w-full sm:w-auto')}
                 >
                   {ctaSecondaryText}
                 </Link>
               </motion.div>
 
-              <div style={{ height: 32 }} />
+              <div className="h-4 lg:h-8" />
 
-              {/* Ecosystem positioning line — replaces generic "trusted by" metric */}
+              {/* Trust bar — avatar cluster + social-proof line. Avatars are
+                  generic initials-on-gradient placeholders (no fabricated
+                  customer photos) until real logos/photos are supplied via
+                  settings/CMS. */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center gap-3"
+              >
+                <div className="flex -space-x-2.5 rtl:space-x-reverse shrink-0" aria-hidden="true">
+                  {TRUST_AVATAR_INITIALS.map((initials, i) => (
+                    <div
+                      key={initials}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-semibold"
+                      style={{
+                        border: '2px solid #09090B',
+                        background: `linear-gradient(135deg, ${TRUST_AVATAR_COLORS[i]} 0%, rgba(255,255,255,0.15) 150%)`,
+                        color: 'rgba(255,255,255,0.92)',
+                      }}
+                    >
+                      {initials}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-left rtl:text-right text-xs leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  {f.trust_line_1}
+                  <br />
+                  {f.trust_line_2}
+                </p>
+              </motion.div>
+
+              <div className="h-3 lg:h-7" />
+
+              {/* Ecosystem positioning line */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
                 className="flex items-center gap-2.5 text-sm font-medium"
                 style={{ color: 'rgba(255,255,255,0.6)' }}
               >
@@ -512,13 +556,13 @@ export function HeroSection({ locale, settings, cmsSection }: HeroSectionProps) 
       {/* Mobile — hero-mobile.webp is already the full-bleed background
           (Layer 1 above). This is just the floating "stage" for the
           product cards + connector lines, stacked after the CTAs. */}
-      <div className="lg:hidden relative z-10 px-6 pb-10">
+      <div className="lg:hidden relative z-10 px-6 pt-1 pb-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="relative mx-auto"
-          style={{ maxWidth: 340, height: 300 }}
+          style={{ maxWidth: 300, height: 250 }}
         >
           <ConnectorLines variant="mobile" />
 

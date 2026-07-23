@@ -82,21 +82,20 @@ export function WhyChooseSection({ locale, settings, cmsSection }: WhyChooseSect
       : fallbackItems
 
   const heading = cmsSection?.title ?? t.title
-  const eyebrow = cmsSection?.subtitle ?? t.eyebrow
 
   return (
-    <section className="section-sm" style={{ borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-background-subtle)' }}>
+    <section style={{ paddingTop: '2rem', paddingBottom: '4rem', borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-background-subtle)' }}>
       <div className="container-site">
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem' }}>
-            {eyebrow}
-            </p>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h2 className="font-display font-semibold text-fluid-xl" style={{ color: 'var(--color-foreground)' }}>
             {heading}
           </h2>
         </div>
 
-        {/* Desktop / tablet — one glass container, items divided inside it */}
+        {/* Desktop / tablet — one glass container, items divided inside it
+            (matches the reference: a single bordered box, not separate
+            floating cards). Icons use a visible accent-colored outline
+            instead of the near-invisible 12%-opacity fill. */}
         <div
           className="hidden sm:grid grid-cols-2 lg:grid-cols-4 rounded-[1.5rem] overflow-hidden"
           style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}
@@ -108,7 +107,7 @@ export function WhyChooseSection({ locale, settings, cmsSection }: WhyChooseSect
               delay={i * 0.1}
               y={16}
               className={cn(
-                'p-6 lg:p-8',
+                'p-6 lg:p-7',
                 i % 2 === 0 && 'border-e',                 // tablet: divider between the 2 columns
                 i < items.length - 2 && 'border-b',         // tablet: divider between the 2 rows
                 'lg:border-b-0 lg:border-e-0',              // desktop: clear tablet dividers…
@@ -118,7 +117,7 @@ export function WhyChooseSection({ locale, settings, cmsSection }: WhyChooseSect
             >
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-                style={{ backgroundColor: 'var(--color-accent-subtle)' }}
+                style={{ border: '1px solid var(--color-accent)' }}
               >
                 <item.icon size={20} style={{ color: 'var(--color-accent)' }} aria-hidden="true" />
               </div>
@@ -132,28 +131,33 @@ export function WhyChooseSection({ locale, settings, cmsSection }: WhyChooseSect
           ))}
         </div>
 
-        {/* Mobile — horizontal snap-scroll carousel, not vertical stacking */}
+        {/* Mobile — compact icon+label strip inside the same single bordered
+            box pattern (matches reference: a peek row visible above the
+            fold, not full description cards). Tap navigates nowhere on its
+            own; full detail lives on hover/desktop — mobile visitors get
+            the gist without needing to scroll or swipe. */}
         <div
-          className="sm:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 pb-2"
+          className="sm:hidden grid grid-cols-4 rounded-2xl overflow-hidden"
+          style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}
         >
           {items.map((item, i) => (
             <div
               key={item.title_en + i}
-              className="snap-center shrink-0 rounded-2xl p-5"
-              style={{ width: '78%', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}
+              className={cn('flex flex-col items-center gap-1.5 py-4 px-1', i !== 0 && 'border-s')}
+              style={{ borderColor: 'var(--color-border)' }}
             >
               <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                style={{ backgroundColor: 'var(--color-accent-subtle)' }}
+                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                style={{ border: '1px solid var(--color-accent)' }}
               >
-                <item.icon size={18} style={{ color: 'var(--color-accent)' }} aria-hidden="true" />
+                <item.icon size={15} style={{ color: 'var(--color-accent)' }} aria-hidden="true" />
               </div>
-              <h3 className="font-display font-semibold text-sm mb-1.5" style={{ color: 'var(--color-foreground)' }}>
+              <span
+                className="text-center leading-tight"
+                style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-foreground-muted)' }}
+              >
                 {isAr ? item.title_ar : item.title_en}
-              </h3>
-              <p className="text-xs leading-relaxed" style={{ color: 'var(--color-foreground-muted)' }}>
-                {isAr ? item.description_ar : item.description_en}
-              </p>
+              </span>
             </div>
           ))}
         </div>
